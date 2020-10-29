@@ -1,7 +1,12 @@
-using GitHub, JSON, PkgBenchmark
+using Pkg
+bmark_dir = @__DIR__
+Pkg.activate(bmark_dir)
+Pkg.develop(PackageSpec(url=joinpath(bmark_dir, ".."))) 
+Pkg.instantiate()
 
-commit = benchmarkpkg("Krylov")  # current state of repository
-master = benchmarkpkg("Krylov", "master")
+using GitHub, JSON, PkgBenchmark
+commit = benchmarkpkg("Krylov"; script=joinpath(bmark_dir, ARGS[1]))  # current state of repository
+master = benchmarkpkg("Krylov", "master"; script=joinpath(bmark_dir, ARGS[1]))
 judgement = judge(commit, master)
 export_markdown("judgement.md", judgement)
 export_markdown("master.md", master)
@@ -24,7 +29,6 @@ gist_json = JSON.parse("""
         }
     }""")
 
-# Need to add GITHUB_AUTH to your .bashrc
-myauth = GitHub.authenticate(ENV["GITHUB_AUTH"])
-posted_gist = create_gist(params = gist_json, auth = myauth)
-println(posted_gist.html_url)
+open("gist.json", "w") do f
+    JSON.print(f, gist_json)
+end
