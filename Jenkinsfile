@@ -75,6 +75,7 @@ pipeline {
           sh '''
           git checkout $BRANCH_NAME
           git clean -fd
+          git reset --hard
           git pull
           git fetch --no-tags origin '+refs/heads/master:refs/remotes/origin/master'
           git checkout -b benchmark
