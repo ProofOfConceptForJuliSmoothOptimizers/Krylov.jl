@@ -73,14 +73,14 @@ pipeline {
       steps {
         dir(WORKSPACE + "/$repo") {
           sh '''
-          git checkout $BRANCH_NAME
           git clean -fd
-          git reset --hard
-          git pull
-          git fetch --no-tags origin '+refs/heads/master:refs/remotes/origin/master'
-          git checkout -b benchmark
-          '''    
-        }   
+          git checkout master
+          git pull origin master
+          git fetch origin
+          git branch -D $BRANCH_NAME || true
+          git checkout -b $BRANCH_NAME origin/$BRANCH_NAME
+          '''
+        }
       }
     }
     stage('run benchmarks') {
@@ -92,8 +92,8 @@ pipeline {
           }
         }
         dir(WORKSPACE + "/$repo") {
-          sh "set -x"
-          sh "qsub -N ${repo}_${pullrequest} -V -cwd -o $HOME/benchmarks/bmark_output.log -e $HOME/benchmarks/bmark_error.log push_benchmarks.sh $bmarkFile"
+          sh "mkdir -p $HOME/benchmarks/${org}/${repo}"
+          sh "qsub -N ${repo}_${pullrequest} -V -cwd -o $HOME/benchmarks/${org}/${repo}/${pullrequest}_bmark_output.log -e $HOME/benchmarks/${org}/${repo}/${pullrequest}_bmark_error.log push_benchmarks.sh $bmarkFile"
         }   
       }
     }
@@ -105,10 +105,10 @@ pipeline {
     cleanup {
       dir(WORKSPACE + "/$repo") {
         sh 'printenv'
-        sh 'git checkout ' + BRANCH_NAME
         sh '''
-        git branch -D benchmark
         git clean -fd
+        git checkout master
+        git branch -D $BRANCH_NAME || true
         '''
       }
     }
