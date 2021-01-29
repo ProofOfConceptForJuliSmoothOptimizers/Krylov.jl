@@ -5,7 +5,6 @@ Pkg.instantiate()
 using ArgParse
 using Git
 using GitHub
-using Printf
 using JSON
 
 DEFAULT_GIST_FILE_PATH = "./gist.json"
