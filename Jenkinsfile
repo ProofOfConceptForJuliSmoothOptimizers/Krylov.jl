@@ -1,4 +1,4 @@
-def bmarkFile = 'benchmarks.jl'
+def bmarkFile = 'run_benchmarks.jl'
 pipeline {
   agent any
   environment {
@@ -49,7 +49,7 @@ pipeline {
 
      causeString: 'Triggered on $comment',
 
-     token: "Krylov",
+     token: "",
 
      printContributedVariables: true,
      printPostContent: true,
@@ -107,7 +107,6 @@ pipeline {
         sh 'printenv'
         sh '''
         git clean -fd
-        git reset --hard
         git checkout master
         git branch -D $BRANCH_NAME || true
         '''
