@@ -49,7 +49,7 @@ pipeline {
 
      causeString: 'Triggered on $comment',
 
-     token: "Krylov",
+     token: "",
 
      printContributedVariables: true,
      printPostContent: true,
