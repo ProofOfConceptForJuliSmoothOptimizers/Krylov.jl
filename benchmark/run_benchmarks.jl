@@ -2,6 +2,7 @@ using Pkg
 bmark_dir = @__DIR__
 println(@__DIR__)
 Pkg.activate(bmark_dir)
+Pkg.resolve()
 Pkg.instantiate()
 bmarkname = "amd"
 using Git
