@@ -49,8 +49,8 @@ files_dict = Dict{String, Any}()
 file_num = 1
 for k ∈ keys(judgement_stats)
   global file_num
-  println("key: ", k)
   if k == :baseline
+    [println("Keys ", i, " :", key) for (i,key) in enumerate(keys(judgement_stats))]
     println("commit stats: ", keys(commit_stats))
     println("master stats: ", keys(master_stats))
     die()
