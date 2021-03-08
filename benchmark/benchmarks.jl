@@ -17,7 +17,7 @@ fetch_ssmc(ufl_posdef, format="MM")
 
 const SUITE = BenchmarkGroup()
 
-SUITE["CG"] = BenchmarkGroup(["CG", "SPD"])
+SUITE["CG"] = BenchmarkGroup() # BenchmarkGroup(["CG", "SPD"])
 
 for N in [32, 64, 128]
   # SUITE["CG"]["DivGrad N=$N"] = BenchmarkGroup()
