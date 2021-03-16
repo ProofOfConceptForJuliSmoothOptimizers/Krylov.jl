@@ -3,7 +3,8 @@ bmark_dir = @__DIR__
 println(@__DIR__)
 Pkg.activate(bmark_dir)
 Pkg.instantiate()
-repo_name = string(split(ARGS[1], ".")[1])
+# repo_name = string(split(ARGS[1], ".")[1])
+repo_name = "Krylov"
 bmarkname = lowercase(repo_name)
 using Git
 
@@ -43,7 +44,7 @@ file_num = 1
 for k ∈ keys(commit_stats)
   global file_num
   k_stats = Dict{Symbol,DataFrame}(:commit => commit_stats[k])
-  save_stats(k_stats, "$(bmarkname)profiles_commit$(k).jld2", force=true)
+  SolverBenchmark.save_stats(k_stats, "$(bmarkname)profiles_commit$(k).jld2", force=true)
 
   k_profile = profile_solvers_from_pkgbmark(k_stats)
   savefig("profiles_commit$(k).svg")
